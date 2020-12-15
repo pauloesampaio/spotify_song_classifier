@@ -1,0 +1,5 @@
+users:
+  paulo: cylbn90p5n1gstle3q83bksox
+  amelia: ameliacss
+credentials_path: ./credentials/credentials.json
+data_path: ./data
