@@ -148,6 +148,6 @@ model/
 *.jpg
 *.parquet
 *.h5
-.cache*
-.pickle
+*.cache*
+*.pickle
 
