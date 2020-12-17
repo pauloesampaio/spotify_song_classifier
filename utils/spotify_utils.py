@@ -25,11 +25,10 @@ def get_songs(client):
     batch = songs["limit"]
     iterations = int(np.ceil(total_songs / batch))
     for i in tqdm(range(iterations), desc="Getting songs"):
-        for i, song in enumerate(songs["items"]):
+        for song in songs["items"]:
             current_song = song["track"]
             songs_list.append(
                 {
-                    "index": songs["offset"] + i,
                     "name": current_song["name"],
                     "artist": [w["name"] for w in current_song["artists"]],
                     "popularity": current_song["popularity"],

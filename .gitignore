@@ -149,3 +149,5 @@ model/
 *.parquet
 *.h5
 .cache*
+.pickle
+
