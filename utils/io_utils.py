@@ -143,6 +143,6 @@ def load_model(config):
     if not check_if_exists(model_path, create=False):
         return "Model not found"
     else:
-        model = models.load(model_path)
+        model = models.load_model(model_path)
         print(f"Model saved on {model_path}")
     return model
