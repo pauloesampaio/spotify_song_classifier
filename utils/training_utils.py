@@ -12,10 +12,26 @@ from tensorflow.keras.optimizers import Adam
 
 
 def identity(X):
+    """Simple identity function
+
+    Args:
+        X (any): Any input
+
+    Returns:
+        Any: Returns input
+    """
     return X
 
 
 def build_features_pipeline(config):
+    """Helper to build feature engineering pipeline
+
+    Args:
+        config (dict): Configuration dictionary
+
+    Returns:
+        sklearn.ColumnTransformer: Feature engineering pipeline
+    """
     transformers = []
     if config["features"]["one_hot_encode_categorical"]:
         ohe = OneHotEncoder(
@@ -37,6 +53,14 @@ def build_features_pipeline(config):
 
 
 def build_label_encoder(config):
+    """Helper to build label encoder
+
+    Args:
+        config (dict): Configuration dictionary
+
+    Returns:
+        sklearn.LabelEncoder: Label encoder
+    """
     users = []
     for user in config["users"]:
         users.append(user)
@@ -45,6 +69,14 @@ def build_label_encoder(config):
 
 
 def build_model(config):
+    """Helper to build keras multi layer perceptron model, based on layer definition on config file.
+
+    Args:
+        config (dict): Dictionary with layer instruction
+
+    Returns:
+        keras.model: Keras model
+    """
     model = Sequential()
     for layer_name in config["model"]["layers"]:
         layer = config["model"]["layers"][layer_name]

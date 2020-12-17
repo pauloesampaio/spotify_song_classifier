@@ -6,6 +6,15 @@ from tqdm import tqdm
 
 
 def get_client(user, credentials):
+    """Helper to get spotify client
+
+    Args:
+        user (string): Spotify username
+        credentials (dict): Spotify credentials
+
+    Returns:
+        spotipy.client: Connected client
+    """
     authenticator = SpotifyOAuth(
         client_id=credentials["CLIENT_ID"],
         client_secret=credentials["CLIENT_SECRET"],
@@ -19,6 +28,14 @@ def get_client(user, credentials):
 
 
 def get_songs(client):
+    """Helper to use client to get user's saved tracks
+
+    Args:
+        client (spotipy.client): Connected client
+
+    Returns:
+        pd.DataFrame: Dataframe with user's saved tracks
+    """
     songs = client.current_user_saved_tracks()
     songs_list = []
     total_songs = songs["total"]
@@ -41,6 +58,15 @@ def get_songs(client):
 
 
 def get_features(client, songs_dataframe):
+    """Helper to get spotify track features (https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/)
+
+    Args:
+        client (spotipy.client): Connected client
+        songs_dataframe (pd.DataFrame): Dataframe with user's saved tracks ID
+
+    Returns:
+        pd.DataFrame: Dataframe with user's saved tracks features
+    """
     indexes = [w for w in range(0, len(songs_dataframe), 50)]
     features = []
     for i in tqdm(indexes, desc="Getting features"):
@@ -53,6 +79,15 @@ def get_features(client, songs_dataframe):
 
 
 def get_analysis(client, songs_dataframe):
+    """Helper to get Spotify audio analysis (https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/)
+
+    Args:
+        client (spotipy.client): Connected client
+        songs_dataFrame (pd.DataFrame): Dataframe with user's saved tracks audio ID
+
+    Returns:
+        pd.DataFrame: Dataframe with user's saved tracks audio analysis
+    """
     analysis = []
     errors = []
     for track_id in tqdm(songs_dataframe["id"], desc="Getting audio analysis"):
@@ -84,6 +119,15 @@ def get_analysis(client, songs_dataframe):
 
 
 def get_songs_and_features_dataframe(user, credentials):
+    """Helper that calls the previous functions to build final user's track dataframe
+
+    Args:
+        user (str): User's Spotify ID
+        credentials (dict): Spotify credentials
+
+    Returns:
+        pd.DataFrame: Dataframe with user's tracks, features and audio analysis
+    """
     client = get_client(user, credentials)
     songs = get_songs(client)
     features_df = get_features(client, songs)
