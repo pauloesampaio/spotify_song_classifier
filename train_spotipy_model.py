@@ -18,7 +18,6 @@ data = get_data(config)
 
 features_pipeline = build_features_pipeline(config)
 label_encoder = build_label_encoder(config)
-model = build_model(config)
 
 X = data.loc[:, data.columns != config["features"]["target"]]
 y = data[config["features"]["target"]]
@@ -32,6 +31,8 @@ X_test = features_pipeline.transform(X_test)
 y_train = label_encoder.transform(y_train)
 y_test = label_encoder.transform(y_test)
 
+model = build_model(config, X_train.shape[1])
+
 model.fit(
     x=X_train,
     y=y_train,
@@ -42,7 +43,7 @@ model.fit(
 )
 
 y_pred_proba = model.predict(X_test)
-y_pred = model.predict_classes(X_test)
+y_pred = (y_pred_proba > 0.5).astype(int)
 
 print(f"F1 score: {f1_score(y_test,y_pred)}")
 print(f"ROC AUC: {roc_auc_score(y_test,y_pred_proba)}")

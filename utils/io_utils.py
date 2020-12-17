@@ -144,5 +144,5 @@ def load_model(config):
         return "Model not found"
     else:
         model = models.load_model(model_path)
-        print(f"Model saved on {model_path}")
+        print(f"Model loaded from {model_path}")
     return model

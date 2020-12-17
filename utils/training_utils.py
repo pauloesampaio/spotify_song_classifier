@@ -5,8 +5,8 @@ from sklearn.preprocessing import (
     LabelEncoder,
 )
 from sklearn.compose import ColumnTransformer
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.optimizers import Adam
 
@@ -68,26 +68,21 @@ def build_label_encoder(config):
     return label_encoder.fit(users)
 
 
-def build_model(config):
-    """Helper to build keras multi layer perceptron model, based on layer definition on config file.
-
-    Args:
-        config (dict): Dictionary with layer instruction
-
-    Returns:
-        keras.model: Keras model
-    """
-    model = Sequential()
-    for layer_name in config["model"]["layers"]:
-        layer = config["model"]["layers"][layer_name]
-        model.add(
-            Dense(
-                units=layer["units"],
-                activation=layer["activation"],
-                name=layer_name,
-            )
+def build_model(config, n_features):
+    inputs = Input(shape=(n_features,), name="input")
+    for i, (layer_name) in enumerate(config["model"]["layers"]):
+        layer_info = config["model"]["layers"][layer_name]
+        current_layer = Dense(
+            units=layer_info["units"],
+            activation=layer_info["activation"],
+            name=layer_name,
         )
-    model.add(Dense(units=1, activation="sigmoid", name="output"))
+        if i == 0:
+            x = current_layer(inputs)
+        else:
+            x = current_layer(x)
+    outputs = Dense(units=1, activation="sigmoid", name="output")(x)
+    model = Model(inputs=inputs, outputs=outputs)
     adam = Adam(lr=config["model"]["learning_rate"])
     model.compile(loss="binary_crossentropy", optimizer=adam, metrics=["accuracy"])
     return model
