@@ -1,5 +1,5 @@
 from utils.io_utils import json_loader, yaml_loader, check_if_exists
-from utils.spotify_utils import get_client, get_songs_and_features_dataframe
+from utils.spotify_utils import get_songs_and_features_dataframe
 
 if __name__ == "__main__":
     config = yaml_loader("./config/config.yml")
@@ -7,7 +7,6 @@ if __name__ == "__main__":
     check_if_exists(config["data_path"], create=True)
     for user_name, user_id in config["users"].items():
         print("Getting {} songs".format(user_name))
-        client = get_client(user_id, credentials)
         current_songs = get_songs_and_features_dataframe(user_id, credentials)
         current_songs["LABEL"] = user_name
         current_path = f"{config['data_path']}/{user_name}_songs.parquet"
