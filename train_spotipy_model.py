@@ -36,7 +36,7 @@ model = build_model(config, X_train.shape[1])
 model.fit(
     x=X_train,
     y=y_train,
-    validation_data=[X_test, y_test],
+    validation_data=(X_test, y_test),
     epochs=config["model"]["epochs"],
     batch_size=config["model"]["batch_size"],
     callbacks=[early_stopping],
