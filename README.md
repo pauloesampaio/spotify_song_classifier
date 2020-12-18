@@ -6,12 +6,12 @@ I'm using the [Spotipy](https://spotipy.readthedocs.io/en/2.16.1/) python librar
 
 ## Config
 
-All configurations are on the `./config/config.yml` file. The main blocks are:
+All configurations are on the `./config/config.yml` file. The main groups are:
 
 - paths configurations: Paths to where to save data, models and so on
-- users: Spotify user ID you want to use
+- users: Spotify user IDs you want to use
 - model: Instructions on how to build the neural network (number of layers, activation function)
-- feaures: Which features to use and how to perform simple feature pre processing
+- features: Which features to use and how to perform simple feature pre processing
 
 You will also need a credentials file in order to connect with Spotify's API. I'm providing a template on `./credentials/credentials.json`
 ## Spotify features
