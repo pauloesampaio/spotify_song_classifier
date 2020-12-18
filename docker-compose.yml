@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  spotipy:
+    build: "."
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8501:8501"
